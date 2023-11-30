@@ -1,6 +1,7 @@
 const fs = require('fs')
 const inquirer = require('inquirer')
 const { Circle, Square, Triangle} = require('./lib/shapes')
+const { create } = require('domain')
 
 class SVG {
     constructor(){
@@ -43,4 +44,52 @@ const questions = [
         message: 'What color would you like the background to be?',
         name: 'background'
     }
-]
+];
+
+function createSVG(response) {
+    const svgString = `
+    <svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+    ${response.shapeEl}
+    ${response.textEl}
+</svg>`;
+
+fs.writeFile('./examples/logo.svg', svgString, (err) => {
+    if(err) {
+        console.error('Error writing file:',err);
+    } else {
+        console.log('Congratulations! A new logo was created! Check the examples folder.')
+    }
+});
+};
+
+async function init() {
+    const response = await inquirer.createPromptModule(questions)
+    const svg = new SVG();
+
+    svg.setTextEl(response.text, response['color']);
+
+    let shape;
+    if (response.shape === 'circle') {
+        shape = new Circle();
+    } else if (response.shape === 'square') {
+        shape = new Square();
+    } else if (response.shape === 'triangle') {
+        shape = new Triangle();
+    }
+    
+    shape.setColor(response['background'])
+    svg.setShapeEl(shape)
+    
+    createSVG(svg);
+    
+};
+
+function confirmText(text) {
+    return text.length <= 3;
+}
+
+module.exports = {
+    confirmText
+}
+
+init();
