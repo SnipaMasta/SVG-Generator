@@ -1,14 +1,14 @@
-const fs = require('fs')
-const inquirer = require('inquirer')
-const { Circle, Square, Triangle} = require('./lib/shapes')
-const { create } = require('domain')
+const fs = require('fs');
+const inquirer = require('inquirer');
+const { Circle, Square, Triangle } = require('./lib/shapes');
+const { create } = require('domain');
 
 class SVG {
-    constructor(){
+    constructor() {
         this.textEl = ''
-        this.shapeEl =''
+        this.shapeEl = ''
     }
-    render(){
+    render() {
         return `<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">
         ${this.shapeEl}
         ${this.textEl}
@@ -53,13 +53,13 @@ function createSVG(response) {
     ${response.textEl}
 </svg>`;
 
-fs.writeFile('./examples/logo.svg', svgString, (err) => {
-    if(err) {
-        console.error('Error writing file:',err);
-    } else {
-        console.log('Congratulations! A new logo was created! Check the examples folder.')
-    }
-});
+    fs.writeFile('./examples/logo.svg', svgString, (err) => {
+        if (err) {
+            console.error('Error writing file:', err);
+        } else {
+            console.log('Congratulations! A new logo was created! Check the examples folder.')
+        }
+    });
 };
 
 async function init() {
@@ -75,13 +75,18 @@ async function init() {
         shape = new Square();
     } else if (response.shape === 'triangle') {
         shape = new Triangle();
+    } else {
+        console.error('Invalid shape:' + response.shape);
     }
-    
-    shape.setColor(response['background'])
-    svg.setShapeEl(shape)
-    
-    createSVG(svg);
-    
+    if (shape) {
+        shape.setColor(response['background'])
+        svg.setShapeEl(shape)
+
+        createSVG(svg);
+    } else {
+        console.error('No valid shape found.');
+    }
+
 };
 
 function confirmText(text) {
