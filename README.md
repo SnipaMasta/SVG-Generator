@@ -33,4 +33,4 @@ MIT License
 
 Feel free to contribute to the project in anyway you see fit! I'm a firm believer that nothing is ever truly perfect. As a result, definitely open up an issue or pull request if you see something that needs addressing!
 
-## Thanks for checking out my application! I hope you have a great day :)
+### Thanks for checking out my application! I hope you have a great day :)
