@@ -1,7 +1,6 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 const { Circle, Square, Triangle } = require('./lib/shapes');
-const { create } = require('domain');
 
 class SVG {
     constructor() {
@@ -30,7 +29,7 @@ const questions = [
     },
     {
         type: 'input',
-        message: 'What colore would you like the text to be?',
+        message: 'What color would you like the text to be?',
         name: 'color'
     },
     {
@@ -63,7 +62,7 @@ function createSVG(response) {
 };
 
 async function init() {
-    const response = await inquirer.createPromptModule(questions)
+    const response = await inquirer.prompt(questions)
     const svg = new SVG();
 
     svg.setTextEl(response.text, response['color']);
@@ -75,17 +74,13 @@ async function init() {
         shape = new Square();
     } else if (response.shape === 'triangle') {
         shape = new Triangle();
-    } else {
-        console.error('Invalid shape:' + response.shape);
     }
     if (shape) {
         shape.setColor(response['background'])
         svg.setShapeEl(shape)
 
-        createSVG(svg);
-    } else {
-        console.error('No valid shape found.');
     }
+    createSVG(svg);
 
 };
 
