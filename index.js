@@ -35,7 +35,7 @@ const questions = [
     {
         type: 'list',
         message: 'What shape would you like?',
-        choices: ['Circle', 'Square', 'Triangle'],
+        choices: ['circle', 'square', 'triangle'],
         name: 'shape'
     },
     {
@@ -62,8 +62,13 @@ function createSVG(response) {
 };
 
 async function init() {
-    const response = await inquirer.prompt(questions)
+    const response = await inquirer.prompt(questions);
     const svg = new SVG();
+
+    if (!confirmText(response.text)) {
+        console.log('Error: Text must be a max of 3 characters.');
+        return;
+    }
 
     svg.setTextEl(response.text, response['color']);
 
@@ -75,11 +80,11 @@ async function init() {
     } else if (response.shape === 'triangle') {
         shape = new Triangle();
     }
-    if (shape) {
-        shape.setColor(response['background'])
-        svg.setShapeEl(shape)
+  
+    shape.setColor(response['shape-color']);
+    svg.setShapeEl(shape);
 
-    }
+  
     createSVG(svg);
 
 };
