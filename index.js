@@ -40,7 +40,7 @@ const questions = [
     },
     {
         type: 'input',
-        message: 'What color would you like the background to be?',
+        message: 'What color would you like the background to be? You can enter a color keyword or a hexdec number.',
         name: 'background'
     }
 ];
@@ -56,7 +56,7 @@ function createSVG(response) {
         if (err) {
             console.error('Error writing file:', err);
         } else {
-            console.log('Congratulations! A new logo was created! Check the examples folder.')
+            console.log('Congratulations! Generated logo.svg! Check the examples folder.')
         }
     });
 };
@@ -81,7 +81,7 @@ async function init() {
         shape = new Triangle();
     }
   
-    shape.setColor(response['shape-color']);
+    shape.setColor(response['background']);
     svg.setShapeEl(shape);
 
   
